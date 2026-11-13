@@ -205,7 +205,7 @@ select:focus{border-color:var(--primary);outline:none;}
     <header class="topbar">
       <div class="topbar-brand">
         <span class="logo-text">🌹 Rose Spell Master</span>
-        <span style="font-size:0.7rem;background:var(--primary);color:white;padding:2px 10px;border-radius:50px;">v4.0 Cloud</span>
+        <span style="font-size:0.7rem;background:var(--primary);color:white;padding:2px 10px;border-radius:50px;">v5.1 Prototype</span>
         <button class="btn btn-sm btn-ghost" id="darkModeToggle" title="Toggle Dark Mode"><i class="fas fa-moon"></i></button>
       </div>
       <div class="topbar-actions">
@@ -251,7 +251,7 @@ select:focus{border-color:var(--primary);outline:none;}
       </div>
       <div class="action-grid">
         <button class="btn btn-primary" id="listenBtn"><i class="fas fa-volume-up"></i> Listen</button>
-        <button class="btn btn-outline" id="nextBtn"><i class="fas fa-forward"></i> Next</button>
+        <button class="btn btn-outline" id="nextBtn"><i class="fas fa-forward"></i> Skip</button>
       </div>
       <div class="input-group">
         <input type="text" id="userInput" placeholder="Type the word..." autocomplete="off" />
@@ -341,7 +341,7 @@ select:focus{border-color:var(--primary);outline:none;}
     <!-- LEADERBOARD -->
     <div id="leaderboardTab" class="tab-content">
       <div class="card">
-        <div class="card-header"><span class="card-title">🏆 Global Leaderboard</span><span class="card-subtitle" style="color:var(--success);" id="syncStatus">☁️ Synced to Cloud</span></div>
+        <div class="card-header"><span class="card-title">🏆 Global Leaderboard</span><span class="card-subtitle" style="color:var(--success);" id="syncStatus">☁️ Saved Locally</span></div>
         <div style="overflow-x:auto;">
           <table style="width:100%;border-collapse:collapse;">
             <thead><tr>
@@ -352,7 +352,7 @@ select:focus{border-color:var(--primary);outline:none;}
               <th style="padding:10px 14px;text-align:left;border-bottom:1px solid var(--light-gray);">⭐ Streak</th>
               <th style="padding:10px 14px;text-align:left;border-bottom:1px solid var(--light-gray);">🏅 Score</th>
             </tr></thead>
-            <tbody id="leaderboardBody"><tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text-light);">Loading from Cloud...</td></tr></tbody>
+            <tbody id="leaderboardBody"><tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text-light);">Loading...</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -365,7 +365,7 @@ select:focus{border-color:var(--primary);outline:none;}
         <div class="settings-grid">
           <div class="settings-group"><label>🗣️ Voice Gender</label><select id="voiceGender"><option value="female">Female</option><option value="male">Male</option></select></div>
           <div class="settings-group"><label>🌍 Voice Accent</label><select id="voiceAccent"><option value="en-US">American</option><option value="en-GB">British</option><option value="en-AU">Australian</option></select></div>
-          <div class="settings-group"><label>🔊 Speech Rate</label><select id="speechRate"><option value="0.5">Very Slow</option><option value="0.7" selected>Slow</option><option value="1.0">Normal</option><option value="1.3">Fast</option></select></div>
+          <div class="settings-group"><label>🔊 Speech Rate</label><select id="speechRate"><option value="0.5">Very Slow</option><option value="0.7">Slow</option><option value="1.0" selected>Normal</option><option value="1.3">Fast</option></select></div>
           <div class="settings-group"><label>🎨 Color Theme</label>
             <div style="display:flex;gap:8px;flex-wrap:wrap;">
               <button class="color-btn active" style="width:36px;height:36px;border-radius:50%;border:3px solid var(--text);background:#6C5CE7;cursor:pointer;" data-color="purple"></button>
@@ -393,11 +393,11 @@ select:focus{border-color:var(--primary);outline:none;}
     <div id="adminTab" class="tab-content">
       <div class="card mb-16" style="border:2px solid var(--warning);">
         <div class="card-header"><span class="card-title">👑 Admin Panel</span><span class="admin-badge">🔒 ADMIN ONLY</span></div>
-        <p style="color:var(--text-light);font-size:0.9rem;">Only teachers/admins can access this section. Changes sync to the Cloud.</p>
+        <p style="color:var(--text-light);font-size:0.9rem;">Only teachers/admins can access this section.</p>
       </div>
       <div class="card mb-16">
         <div class="card-header"><span class="card-title">👥 User Management</span></div>
-        <div class="user-list" id="userList"><span style="color:var(--text-light);">Loading users from Cloud...</span></div>
+        <div class="user-list" id="userList"><span style="color:var(--text-light);">Loading users...</span></div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
           <input type="text" id="newAdminUsername" placeholder="Username" style="flex:1;padding:10px 14px;border:2px solid var(--light-gray);border-radius:var(--radius-sm);font-family:var(--font);background:var(--bg);color:var(--text);min-width:100px;" />
           <input type="text" id="newAdminPassword" placeholder="Password" style="flex:1;padding:10px 14px;border:2px solid var(--light-gray);border-radius:var(--radius-sm);font-family:var(--font);background:var(--bg);color:var(--text);min-width:100px;" />
@@ -430,54 +430,9 @@ select:focus{border-color:var(--primary);outline:none;}
 </div>
 
 <!-- ========================================== -->
-<!-- FIREBASE SDK CONFIGURATION                 -->
-<!-- ========================================== -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-  import { getFirestore, doc, setDoc, getDoc, collection, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-  import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-
-  // YOUR SPECIFIC FIREBASE CONFIG
-  const firebaseConfig = {
-    apiKey: "AIzaSyDn714pREXsDyEDXfdYBohyMEyEiyKhTXA",
-    authDomain: "rose-spellmaster.firebaseapp.com",
-    projectId: "rose-spellmaster",
-    storageBucket: "rose-spellmaster.firebasestorage.app",
-    messagingSenderId: "527742641016",
-    appId: "1:527742641016:web:42f05ff18ab4edad8ade8d",
-    measurementId: "G-4K4188T3TD"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const auth = getAuth(app);
-
-  // Authenticate anonymously so Firestore Security Rules work
-  signInAnonymously(auth)
-    .then(() => {
-      console.log("🔥 Firebase Authenticated & Connected!");
-      
-      // Expose to window so the main script can use them
-      window.fireDB = { db, doc, setDoc, getDoc, collection, getDocs, deleteDoc };
-      
-      // Dispatch an event to let the main script know Firebase is ready
-      window.dispatchEvent(new Event('firebaseReady'));
-    })
-    .catch((error) => {
-      console.error("Auth Error:", error);
-      alert("Database connection failed. Did you enable Anonymous Auth in Firebase?");
-    });
-</script>
-
-<!-- ========================================== -->
-<!-- MAIN APPLICATION LOGIC                     -->
+<!-- MAIN APPLICATION LOGIC (LOCAL STORAGE)     -->
 <!-- ========================================== -->
 <script>
-// ================================================================
-// ROSE SPELL MASTER v4.0 - CLOUD EDITION
-// ================================================================
-
 const WORD_CATEGORIES = {
   '3-letter': { name: '3-Letter Words', words: [
     {word:'cat',hint:'a furry pet'},{word:'dog',hint:'man\'s best friend'},{word:'sun',hint:'shines in the sky'},
@@ -554,98 +509,32 @@ const WORD_CATEGORIES = {
   ]}
 };
 
+// Local Storage DB
+const DB = {
+  getUsers() { return JSON.parse(localStorage.getItem('rose_users')) || { admin: { password: 'admin123', role: 'teacher', stats: { correct: 0, wrong: 0, streak: 0, missed: [] } } }; },
+  setUsers(u) { localStorage.setItem('rose_users', JSON.stringify(u)); },
+  getGameState() { return JSON.parse(localStorage.getItem('rose_game')) || { correct: 0, wrong: 0, streak: 0, missed: [] }; },
+  setGameState(s) { localStorage.setItem('rose_game', JSON.stringify(s)); }
+};
+
 let currentUser = null;
-let dbReady = false;
-let cachedUsers = {};
-
-// Listen for Firebase to be ready
-window.addEventListener('firebaseReady', () => {
-  dbReady = true;
-  document.getElementById('syncStatus').textContent = "☁️ Connected to Cloud";
-  
-  // Check if user is already logged in from a previous session
-  const session = localStorage.getItem('rose_session');
-  if (session) {
-    loginUser(session, cachedUsers[session]?.password, true);
-  }
-});
-
-// ============================================================
-// CLOUD DATABASE FUNCTIONS
-// ============================================================
-async function cloudGetUsers() {
-  if (!dbReady) return {};
-  try {
-    const { collection, getDocs, doc, setDoc } = window.fireDB;
-    const snapshot = await getDocs(collection(window.fireDB.db, "users"));
-    
-    // If database is empty, create the default admin
-    if (snapshot.empty) {
-      const defaultAdmin = { password:'admin123', role:'teacher', stats:{correct:0,wrong:0,streak:0,missed:[]} };
-      await setDoc(doc(window.fireDB.db, "users", "admin"), defaultAdmin);
-      return { admin: defaultAdmin };
-    }
-
-    const users = {};
-    snapshot.forEach(docSnap => {
-      users[docSnap.id] = docSnap.data();
-    });
-    return users;
-  } catch (e) {
-    console.error("Cloud error:", e);
-    return {};
-  }
-}
-
-async function cloudSaveUser(username, data) {
-  if (!dbReady) return;
-  try {
-    const { doc, setDoc } = window.fireDB;
-    await setDoc(doc(window.fireDB.db, "users", username), data, { merge: true });
-  } catch (e) {
-    console.error("Cloud error:", e);
-  }
-}
-
-async function cloudDeleteUser(username) {
-  if (!dbReady) return;
-  try {
-    const { doc, deleteDoc } = window.fireDB;
-    await deleteDoc(doc(window.fireDB.db, "users", username));
-  } catch (e) {
-    console.error("Cloud error:", e);
-  }
-}
-
-// ============================================================
-// APP STATE
-// ============================================================
 let currentCategory = 'all';
 let currentWord = null;
-let voiceGender = 'female', voiceAccent = 'en-US', speechRate = 0.7;
+let voiceGender = 'female', voiceAccent = 'en-US', speechRate = 1.0;
 
-function getUserStats(u){ return cachedUsers[u]?.stats || {correct:0,wrong:0,streak:0,missed:[]}; }
-function isTeacher(){ return currentUser && cachedUsers[currentUser]?.role === 'teacher'; }
+function getUserStats(u){ return DB.getUsers()[u]?.stats || {correct:0,wrong:0,streak:0,missed:[]}; }
+function isTeacher(){ return currentUser && DB.getUsers()[currentUser]?.role === 'teacher'; }
 
-async function loginUser(u, p, isSessionRestore = false){
-  if(!dbReady) {
-    document.getElementById('loginError').textContent = '⚠️ Connecting to Cloud... Please wait 2 seconds and try again.';
-    return;
-  }
-  
-  document.getElementById('loginError').textContent = 'Checking Cloud...';
-  cachedUsers = await cloudGetUsers();
-  
-  if (cachedUsers[u] && (isSessionRestore || cachedUsers[u].password === p)){ 
+function loginUser(u, p, isSessionRestore = false){
+  const users = DB.getUsers();
+  if (users[u] && (isSessionRestore || users[u].password === p)){ 
     currentUser = u; 
     localStorage.setItem('rose_session', u);
-    
     document.getElementById('loginScreen').classList.add('hidden');
     document.getElementById('appScreen').classList.remove('hidden');
     document.getElementById('userName').textContent = u;
     document.getElementById('userAvatar').textContent = u.charAt(0).toUpperCase();
     document.getElementById('loginError').textContent = '';
-    
     initApp();
     return true; 
   } else {
@@ -654,15 +543,8 @@ async function loginUser(u, p, isSessionRestore = false){
   }
 }
 
-// ============================================================
-// SPELLING
-// ============================================================
 function getWordsForCategory(cat){
-  if (cat === 'all'){
-    let result = [];
-    Object.keys(WORD_CATEGORIES).forEach(k => { WORD_CATEGORIES[k].words.forEach(w => result.push({...w, category:k})); });
-    return result;
-  }
+  if (cat === 'all'){ let result = []; Object.keys(WORD_CATEGORIES).forEach(k => { WORD_CATEGORIES[k].words.forEach(w => result.push({...w, category:k})); }); return result; }
   if (WORD_CATEGORIES[cat]) return WORD_CATEGORIES[cat].words.map(w => ({...w, category:cat}));
   return [];
 }
@@ -678,21 +560,14 @@ function getNextWord(){
   return available[Math.floor(Math.random()*available.length)];
 }
 
-async function checkSpelling(input, word){
+function checkSpelling(input, word){
   const isCorrect = input.trim().toLowerCase() === word.toLowerCase().trim();
   const stats = getUserStats(currentUser);
-  
-  if (isCorrect){ 
-    stats.correct++; 
-    stats.streak++; 
-    stats.missed = stats.missed.filter(w => w !== word); 
-  } else { 
-    stats.wrong++; 
-    stats.streak = 0; 
-    if (!stats.missed.includes(word)) stats.missed.push(word); 
-  }
-  
-  await updateUserStats(currentUser, stats);
+  if (isCorrect){ stats.correct++; stats.streak++; stats.missed = stats.missed.filter(w => w !== word); } 
+  else { stats.wrong++; stats.streak = 0; if (!stats.missed.includes(word)) stats.missed.push(word); }
+  const users = DB.getUsers();
+  users[currentUser].stats = stats;
+  DB.setUsers(users);
   return isCorrect;
 }
 
@@ -700,18 +575,16 @@ function speakWord(word){
   if (!window.speechSynthesis) return;
   window.speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(word);
-  u.rate = speechRate;
-  u.pitch = voiceGender === 'female' ? 1.1 : 0.9;
-  u.lang = voiceAccent;
+  u.rate = speechRate; u.pitch = voiceGender === 'female' ? 1.1 : 0.9; u.lang = voiceAccent; u.volume = 1.0; 
   const voices = window.speechSynthesis.getVoices();
-  let f = voices.filter(v => v.lang.startsWith(voiceAccent));
-  if (voiceGender === 'female') f = f.filter(v => /female|samantha|victoria|zira/i.test(v.name));
-  else f = f.filter(v => /male|david|alex|daniel/i.test(v.name));
+  let f = voices.filter(v => v.lang === voiceAccent || v.lang.replace('_', '-') === voiceAccent);
+  if (voiceGender === 'female') f = f.filter(v => /female|samantha|victoria|zira|karen|moira/i.test(v.name));
+  else f = f.filter(v => /male|david|alex|daniel|george/i.test(v.name));
   if (f.length > 0) u.voice = f[0];
-  window.speechSynthesis.speak(u);
+  setTimeout(() => { window.speechSynthesis.speak(u); }, 100);
 }
 
-async function updateAllStats(){
+function updateAllStats(){
   const stats = getUserStats(currentUser);
   const total = (stats.correct||0) + (stats.wrong||0);
   const accuracy = total > 0 ? Math.round((stats.correct/total)*100) : 0;
@@ -736,8 +609,7 @@ async function updateAllStats(){
   Object.keys(allWords).forEach(k => { const c = el('count-'+k); if(c) c.textContent = allWords[k].words.length; });
   let totalWords = 0; Object.keys(allWords).forEach(k => totalWords += allWords[k].words.length);
   if (el('catWordCount')) el('catWordCount').textContent = totalWords + ' words total';
-  
-  await refreshLeaderboardUI();
+  refreshLeaderboardUI();
 }
 
 function updateMissedWords(missed){
@@ -755,60 +627,54 @@ function updateMissedWords(missed){
   });
 }
 
-async function removeMissedWord(w){
+function removeMissedWord(w){
   const stats = getUserStats(currentUser);
   stats.missed = stats.missed.filter(x => x !== w);
-  await updateUserStats(currentUser, stats);
-  await updateAllStats();
+  const users = DB.getUsers();
+  users[currentUser].stats = stats;
+  DB.setUsers(users);
+  updateAllStats();
 }
 
-async function refreshLeaderboardUI(){
-  const users = await cloudGetUsers();
+function refreshLeaderboardUI(){
+  const users = DB.getUsers();
   const lb = {};
   Object.keys(users).forEach(u => {
     const stats = users[u].stats || {correct:0,wrong:0,streak:0};
     const total = stats.correct + stats.wrong;
-    lb[u] = {
-      correct: stats.correct,
-      wrong: stats.wrong,
-      streak: stats.streak,
-      accuracy: total > 0 ? Math.round((stats.correct/total)*100) : 0,
-      score: (stats.correct * 10) + (stats.streak * 2)
-    };
+    lb[u] = { correct: stats.correct, wrong: stats.wrong, streak: stats.streak, accuracy: total > 0 ? Math.round((stats.correct/total)*100) : 0, score: (stats.correct * 10) + (stats.streak * 2) };
   });
-
   const arr = Object.entries(lb).sort((a,b) => b[1].score - a[1].score);
   const tb = document.getElementById('leaderboardBody');
   if (!tb) return;
   if (arr.length === 0){ tb.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text-light);">No data yet</td></tr>'; return; }
-  
   tb.innerHTML = arr.slice(0,20).map(([u,d],i) => {
     const medal = i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1);
     return `<tr><td style="padding:10px 14px;border-bottom:1px solid var(--light-gray);font-weight:800;">${medal}</td><td style="padding:10px 14px;border-bottom:1px solid var(--light-gray);"><strong>${u}</strong></td><td style="padding:10px 14px;border-bottom:1px solid var(--light-gray);">${d.correct}</td><td style="padding:10px 14px;border-bottom:1px solid var(--light-gray);">${d.accuracy}%</td><td style="padding:10px 14px;border-bottom:1px solid var(--light-gray);">${d.streak}</td><td style="padding:10px 14px;border-bottom:1px solid var(--light-gray);font-weight:800;">${d.score}</td></tr>`;
   }).join('');
 }
 
-async function updateUserList(){
+function updateUserList(){
   const c = document.getElementById('userList');
   if (!c) return;
-  cachedUsers = await cloudGetUsers();
-  c.innerHTML = Object.keys(cachedUsers).map(u => {
-    const emoji = cachedUsers[u].role==='teacher'?'👨‍🏫':'👶';
+  const users = DB.getUsers();
+  c.innerHTML = Object.keys(users).map(u => {
+    const emoji = users[u].role==='teacher'?'👨‍🏫':'👶';
     const del = u !== 'admin' ? `<button class="delete-user" onclick="deleteUser('${u}')" title="Delete">✕</button>` : '';
     return `<span class="user-tag">${emoji} ${u} ${del}</span>`;
   }).join('');
   const sel = document.getElementById('resetUserSelect');
-  if (sel){
-    sel.innerHTML = '<option value="">-- Select User --</option>' + Object.keys(cachedUsers).filter(u => u !== 'admin').map(u => `<option value="${u}">${u}</option>`).join('');
-  }
+  if (sel) sel.innerHTML = '<option value="">-- Select User --</option>' + Object.keys(users).filter(u => u !== 'admin').map(u => `<option value="${u}">${u}</option>`).join('');
 }
 
-async function deleteUser(username){
-  if (!isTeacher()) { alert('❌ Access denied'); return; }
+function deleteUser(username){
+  if (!isTeacher()) return;
   if (!confirm(`Delete user "${username}"?`)) return;
-  await cloudDeleteUser(username);
-  await updateUserList();
-  alert(`✅ User "${username}" deleted from Cloud`);
+  const users = DB.getUsers();
+  delete users[username];
+  DB.setUsers(users);
+  updateUserList();
+  alert(`✅ User "${username}" deleted`);
 }
 
 function updateCategoryWordList(cat){
@@ -818,12 +684,7 @@ function updateCategoryWordList(cat){
   const name = cat === 'all' ? 'All Words' : (WORD_CATEGORIES[cat]?.name || cat);
   document.getElementById('selectedCatName').textContent = name;
   if (words.length === 0){ c.innerHTML = '<span style="color:var(--text-light);">No words</span>'; return; }
-  c.innerHTML = words.map(w =>
-    `<div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--bg);border-radius:var(--radius-sm);margin-bottom:4px;">
-      <span style="font-weight:600;">${w.word}</span>
-      <span style="color:var(--text-light);font-size:0.85rem;">${w.hint||''}</span>
-    </div>`
-  ).join('');
+  c.innerHTML = words.map(w => `<div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--bg);border-radius:var(--radius-sm);margin-bottom:4px;"><span style="font-weight:600;">${w.word}</span><span style="color:var(--text-light);font-size:0.85rem;">${w.hint||''}</span></div>`).join('');
 }
 
 function selectCategory(cat){
@@ -849,11 +710,11 @@ function loadNewWord(){
   document.getElementById('feedback').style.background = 'transparent';
 }
 
-async function handleCheck(){
+function handleCheck(){
   const input = document.getElementById('userInput').value;
   if (!currentWord){ document.getElementById('feedback').textContent = '⚠️ Tap "Next" first!'; return; }
   if (!input.trim()){ document.getElementById('feedback').textContent = '✏️ Type something!'; return; }
-  const isCorrect = await checkSpelling(input, currentWord);
+  const isCorrect = checkSpelling(input, currentWord);
   const d = document.getElementById('wordDisplay');
   document.getElementById('wordText').textContent = currentWord;
   if (isCorrect){
@@ -867,13 +728,11 @@ async function handleCheck(){
     document.getElementById('feedback').style.color = 'var(--danger)';
     speakWord(currentWord);
   }
-  await updateAllStats();
-  setTimeout(() => d.className = 'word-display', 1500);
+  updateAllStats();
+  setTimeout(() => { d.className = 'word-display'; loadNewWord(); }, 1500);
 }
 
-// ============================================================
 // GAMES
-// ============================================================
 let currentGame = null, gameScore = 0, gameRound = 0, gameWords = [];
 
 function startGame(type){
@@ -883,11 +742,7 @@ function startGame(type){
   gameWords = words.sort(() => Math.random() - 0.5).slice(0, 10);
   document.getElementById('gameArea').style.display = 'block';
   document.getElementById('gameSelector').style.display = 'none';
-  document.getElementById('gameTitle').textContent = '🎮 ' + {
-    match:'Word Match', gap:'Gap Fill', bee:'Spelling Bee', crossword:'Crossword',
-    wordsearch:'Word Search', balloon:'Balloon Pop', hangman:'Hangman',
-    webconnect:'Web Connect', missing:'Missing Letters'
-  }[type];
+  document.getElementById('gameTitle').textContent = '🎮 ' + {match:'Word Match', gap:'Gap Fill', bee:'Spelling Bee', crossword:'Crossword', wordsearch:'Word Search', balloon:'Balloon Pop', hangman:'Hangman', webconnect:'Web Connect', missing:'Missing Letters'}[type];
   document.getElementById('gameScore').textContent = 'Score: 0';
   document.getElementById('gameFeedback').textContent = '💡 Good luck!';
   document.getElementById('gameFeedback').style.color = 'var(--text-light)';
@@ -899,9 +754,7 @@ function nextGameRound(){
   const w = gameWords[gameRound];
   gameRound++;
   document.getElementById('gameRound').textContent = `Round: ${gameRound}/${gameWords.length}`;
-  ({match:renderMatch, gap:renderGap, bee:renderBee, crossword:renderCrossword,
-    wordsearch:renderWordSearch, balloon:renderBalloon, hangman:renderHangman,
-    webconnect:renderWebConnect, missing:renderMissing})[currentGame](w);
+  ({match:renderMatch, gap:renderGap, bee:renderBee, crossword:renderCrossword, wordsearch:renderWordSearch, balloon:renderBalloon, hangman:renderHangman, webconnect:renderWebConnect, missing:renderMissing})[currentGame](w);
 }
 
 function endGame(){
@@ -918,16 +771,11 @@ function renderMatch(w){
   const shuf = all.sort(() => Math.random() - 0.5);
   for (const x of shuf){ if (!opts.find(o => o.word === x.word) && opts.length < 4) opts.push(x); if (opts.length >= 4) break; }
   const shuffled = opts.sort(() => Math.random() - 0.5);
-  document.getElementById('gameContent').innerHTML = `
-    <div class="game-question">🔍 Match the word to its meaning:</div>
-    <div style="text-align:center;font-size:1.5rem;font-weight:700;padding:16px;background:var(--bg);border-radius:var(--radius-sm);margin-bottom:16px;">"${w.word}"</div>
-    <div class="game-options">${shuffled.map(o => `<button class="option-btn" onclick="checkMatch('${o.word}','${w.word}',this)">${o.hint||o.word}</button>`).join('')}</div>`;
+  document.getElementById('gameContent').innerHTML = `<div class="game-question">🔍 Match the word to its meaning:</div><div style="text-align:center;font-size:1.5rem;font-weight:700;padding:16px;background:var(--bg);border-radius:var(--radius-sm);margin-bottom:16px;">"${w.word}"</div><div class="game-options">${shuffled.map(o => `<button class="option-btn" onclick="checkMatch('${o.word}','${w.word}',this)">${o.hint||o.word}</button>`).join('')}</div>`;
 }
-
 function checkMatch(sel, cor, btn){
   document.querySelectorAll('.option-btn').forEach(b => b.classList.add('disabled'));
-  if (sel === cor){ btn.classList.add('correct'); gameScore += 10; document.getElementById('gameScore').textContent = 'Score: '+gameScore;
-    document.getElementById('gameFeedback').textContent = '✅ Correct! +10'; document.getElementById('gameFeedback').style.color = 'var(--success)'; }
+  if (sel === cor){ btn.classList.add('correct'); gameScore += 10; document.getElementById('gameScore').textContent = 'Score: '+gameScore; document.getElementById('gameFeedback').textContent = '✅ Correct! +10'; document.getElementById('gameFeedback').style.color = 'var(--success)'; }
   else { btn.classList.add('wrong'); document.getElementById('gameFeedback').textContent = '❌ Wrong! Answer: '+cor; document.getElementById('gameFeedback').style.color = 'var(--danger)'; }
   setTimeout(nextGameRound, 1500);
 }
@@ -940,36 +788,24 @@ function renderGap(w){
   const shuf = all.sort(() => Math.random() - 0.5);
   for (const x of shuf){ if (!opts.includes(x.word) && opts.length < 4) opts.push(x.word); if (opts.length >= 4) break; }
   const shuffled = opts.sort(() => Math.random() - 0.5);
-  document.getElementById('gameContent').innerHTML = `
-    <div class="game-question">📝 Fill in the blank:</div>
-    <div style="font-size:1.2rem;padding:20px;background:var(--bg);border-radius:var(--radius-sm);margin-bottom:16px;text-align:center;">${s.replace('___', '_____')}</div>
-    <div style="text-align:center;color:var(--text-light);margin-bottom:8px;">💡 ${w.hint||''}</div>
-    <div class="game-options">${shuffled.map(o => `<button class="option-btn" onclick="checkGap('${o}','${w.word}',this)">${o}</button>`).join('')}</div>`;
+  document.getElementById('gameContent').innerHTML = `<div class="game-question">📝 Fill in the blank:</div><div style="font-size:1.2rem;padding:20px;background:var(--bg);border-radius:var(--radius-sm);margin-bottom:16px;text-align:center;">${s.replace('___', '_____')}</div><div style="text-align:center;color:var(--text-light);margin-bottom:8px;">💡 ${w.hint||''}</div><div class="game-options">${shuffled.map(o => `<button class="option-btn" onclick="checkGap('${o}','${w.word}',this)">${o}</button>`).join('')}</div>`;
 }
-
 function checkGap(sel, cor, btn){
   document.querySelectorAll('.option-btn').forEach(b => b.classList.add('disabled'));
-  if (sel === cor){ btn.classList.add('correct'); gameScore += 10; document.getElementById('gameScore').textContent = 'Score: '+gameScore;
-    document.getElementById('gameFeedback').textContent = '✅ Correct! +10'; document.getElementById('gameFeedback').style.color = 'var(--success)'; }
+  if (sel === cor){ btn.classList.add('correct'); gameScore += 10; document.getElementById('gameScore').textContent = 'Score: '+gameScore; document.getElementById('gameFeedback').textContent = '✅ Correct! +10'; document.getElementById('gameFeedback').style.color = 'var(--success)'; }
   else { btn.classList.add('wrong'); document.getElementById('gameFeedback').textContent = '❌ Answer: '+cor; document.getElementById('gameFeedback').style.color = 'var(--danger)'; }
   setTimeout(nextGameRound, 1500);
 }
 
 function renderBee(w){
   speakWord(w.word);
-  document.getElementById('gameContent').innerHTML = `
-    <div class="game-question">🐝 Listen and type the word:</div>
-    <div style="text-align:center;padding:8px;margin-bottom:12px;"><button class="btn btn-primary" onclick="speakWord('${w.word}')"><i class="fas fa-volume-up"></i> Repeat</button></div>
-    <div class="input-group"><input type="text" id="beeInput" placeholder="Type word..." /><button class="btn btn-success" onclick="checkBee('${w.word}')"><i class="fas fa-check"></i></button></div>
-    <div style="text-align:center;color:var(--text-light);margin-top:8px;">💡 ${w.hint||''}</div>`;
+  document.getElementById('gameContent').innerHTML = `<div class="game-question">🐝 Listen and type the word:</div><div style="text-align:center;padding:8px;margin-bottom:12px;"><button class="btn btn-primary" onclick="speakWord('${w.word}')"><i class="fas fa-volume-up"></i> Repeat</button></div><div class="input-group"><input type="text" id="beeInput" placeholder="Type word..." /><button class="btn btn-success" onclick="checkBee('${w.word}')"><i class="fas fa-check"></i></button></div><div style="text-align:center;color:var(--text-light);margin-top:8px;">💡 ${w.hint||''}</div>`;
   setTimeout(() => { const i = document.getElementById('beeInput'); if(i){ i.focus(); i.addEventListener('keydown', e => { if(e.key==='Enter'){ e.preventDefault(); checkBee(w.word); } }); } }, 100);
 }
-
 function checkBee(cor){
   const i = document.getElementById('beeInput'); if(!i) return;
   const ans = i.value.trim().toLowerCase();
-  if (ans === cor.toLowerCase()){ gameScore += 10; document.getElementById('gameScore').textContent = 'Score: '+gameScore;
-    document.getElementById('gameFeedback').textContent = '✅ Correct! +10'; document.getElementById('gameFeedback').style.color = 'var(--success)'; }
+  if (ans === cor.toLowerCase()){ gameScore += 10; document.getElementById('gameScore').textContent = 'Score: '+gameScore; document.getElementById('gameFeedback').textContent = '✅ Correct! +10'; document.getElementById('gameFeedback').style.color = 'var(--success)'; }
   else { document.getElementById('gameFeedback').textContent = '❌ Answer: '+cor; document.getElementById('gameFeedback').style.color = 'var(--danger)'; }
   i.disabled = true;
   setTimeout(nextGameRound, 1500);
@@ -979,9 +815,7 @@ function renderCrossword(w){
   const letters = w.word.split('');
   const size = Math.max(5, letters.length + 2);
   const startRow = Math.floor(size/2), startCol = Math.floor((size-letters.length)/2);
-  let html = `<div class="game-question">🔍 Complete the crossword:</div>
-    <div style="text-align:center;color:var(--text-light);margin-bottom:12px;">💡 ${w.hint||''}</div>
-    <div class="crossword-grid" style="grid-template-columns:repeat(${size},1fr);">`;
+  let html = `<div class="game-question">🔍 Complete the crossword:</div><div style="text-align:center;color:var(--text-light);margin-bottom:12px;">💡 ${w.hint||''}</div><div class="crossword-grid" style="grid-template-columns:repeat(${size},1fr);">`;
   for (let r=0;r<size;r++) for (let c=0;c<size;c++){
     const isWord = r===startRow && c>=startCol && c<startCol+letters.length;
     if (isWord) html += `<div class="cell" style="background:var(--success);color:white;display:flex;align-items:center;justify-content:center;">${letters[c-startCol].toUpperCase()}</div>`;
@@ -990,10 +824,8 @@ function renderCrossword(w){
   html += `</div><div style="text-align:center;margin-top:12px;"><button class="btn btn-success" onclick="checkCrossword('${w.word}')"><i class="fas fa-check"></i> Complete</button></div>`;
   document.getElementById('gameContent').innerHTML = html;
 }
-
 function checkCrossword(cor){
-  gameScore += 15; document.getElementById('gameScore').textContent = 'Score: '+gameScore;
-  document.getElementById('gameFeedback').textContent = `✅ Word: "${cor}" +15`; document.getElementById('gameFeedback').style.color = 'var(--success)';
+  gameScore += 15; document.getElementById('gameScore').textContent = 'Score: '+gameScore; document.getElementById('gameFeedback').textContent = `✅ Word: "${cor}" +15`; document.getElementById('gameFeedback').style.color = 'var(--success)';
   setTimeout(nextGameRound, 1500);
 }
 
@@ -1007,22 +839,19 @@ function renderWordSearch(w){
   const sr = Math.floor(Math.random()*(size-(dir===0?1:letters.length)));
   const sc = Math.floor(Math.random()*(size-(dir===0?letters.length:1)));
   for (let i=0;i<letters.length;i++){ if(dir===0) grid[sr][sc+i]=letters[i]; else grid[sr+i][sc]=letters[i]; }
-  let html = `<div class="game-question">🔎 Find: <span style="color:var(--primary);">${w.hint||'No hint'}</span></div>
-    <div class="word-search-grid" style="grid-template-columns:repeat(${size},1fr);max-width:400px;margin:0 auto;">`;
+  let html = `<div class="game-question">🔎 Find: <span style="color:var(--primary);">${w.hint||'No hint'}</span></div><div class="word-search-grid" style="grid-template-columns:repeat(${size},1fr);max-width:400px;margin:0 auto;">`;
   for (let r=0;r<size;r++) for (let c=0;c<size;c++)
     html += `<div class="cell" data-letter="${grid[r][c]}" onclick="checkWSCell('${grid[r][c]}','${w.word}',this)">${grid[r][c]}</div>`;
   html += `</div>`;
   document.getElementById('gameContent').innerHTML = html;
   window._wsFound = 0;
 }
-
 function checkWSCell(letter, word, cell){
   if (cell.classList.contains('found')) return;
   if (word.toLowerCase().includes(letter)){
     cell.classList.add('found'); window._wsFound++;
     if (window._wsFound >= word.split('').filter((l,i,a) => a.indexOf(l)===i).length){
-      gameScore += 15; document.getElementById('gameScore').textContent = 'Score: '+gameScore;
-      document.getElementById('gameFeedback').textContent = `✅ Found! +15`; document.getElementById('gameFeedback').style.color = 'var(--success)';
+      gameScore += 15; document.getElementById('gameScore').textContent = 'Score: '+gameScore; document.getElementById('gameFeedback').textContent = `✅ Found! +15`; document.getElementById('gameFeedback').style.color = 'var(--success)';
       setTimeout(nextGameRound, 1500);
     }
   }
@@ -1034,40 +863,25 @@ function renderBalloon(w){
   const shuf = all.sort(() => Math.random() - 0.5);
   for (const x of shuf){ if (!opts.find(o => o.word === x.word) && opts.length < 6) opts.push(x); if (opts.length >= 6) break; }
   const shuffled = opts.sort(() => Math.random() - 0.5);
-  document.getElementById('gameContent').innerHTML = `
-    <div class="game-question">🎈 Pop the balloon: <strong>"${w.word}"</strong></div>
-    <div style="text-align:center;color:var(--text-light);margin-bottom:8px;">💡 ${w.hint||''}</div>
-    <div class="balloon-container">${shuffled.map((o,i) => `<div class="balloon" onclick="checkBalloon('${o.word}','${w.word}',this)">🎈<div style="font-size:0.75rem;font-weight:600;margin-top:-8px;">${o.word}</div></div>`).join('')}</div>`;
+  document.getElementById('gameContent').innerHTML = `<div class="game-question">🎈 Pop the balloon: <strong>"${w.word}"</strong></div><div style="text-align:center;color:var(--text-light);margin-bottom:8px;">💡 ${w.hint||''}</div><div class="balloon-container">${shuffled.map((o,i) => `<div class="balloon" onclick="checkBalloon('${o.word}','${w.word}',this)">🎈<div style="font-size:0.75rem;font-weight:600;margin-top:-8px;">${o.word}</div></div>`).join('')}</div>`;
 }
-
 function checkBalloon(sel, cor, el){
   if (el.classList.contains('popped')) return;
   if (sel === cor){
-    el.classList.add('popped'); gameScore += 10; document.getElementById('gameScore').textContent = 'Score: '+gameScore;
-    document.getElementById('gameFeedback').textContent = '🎉 POP! +10'; document.getElementById('gameFeedback').style.color = 'var(--success)';
+    el.classList.add('popped'); gameScore += 10; document.getElementById('gameScore').textContent = 'Score: '+gameScore; document.getElementById('gameFeedback').textContent = '🎉 POP! +10'; document.getElementById('gameFeedback').style.color = 'var(--success)';
     setTimeout(nextGameRound, 1000);
   } else {
-    el.classList.add('popped');
-    document.getElementById('gameFeedback').textContent = '❌ Answer: '+cor; document.getElementById('gameFeedback').style.color = 'var(--danger)';
+    el.classList.add('popped'); document.getElementById('gameFeedback').textContent = '❌ Answer: '+cor; document.getElementById('gameFeedback').style.color = 'var(--danger)';
     setTimeout(nextGameRound, 1500);
   }
 }
 
 const HANGMAN_STAGES = ['   \n   \n   \n   \n   ','   \n   \n   \n   \n===','   \n   \n   \n | \n===','   \n   \n   \n/|\\\n===','   \n   \n   \n/|\\\n/ \\','   \n   \n  |\n/|\\\n/ \\','   \n  _\n  |\n/|\\\n/ \\','  __\n  |\n  |\n/|\\\n/ \\'];
-
 function renderHangman(w){
   window._hmWrong = 0;
   window._hmWord = w.word.toLowerCase();
-  document.getElementById('gameContent').innerHTML = `
-    <div class="game-question">💀 Guess the word (${w.word.length} letters)</div>
-    <div class="hangman-display" id="hangmanDisplay">${HANGMAN_STAGES[0]}</div>
-    <div id="hangmanWord" style="text-align:center;font-size:2rem;letter-spacing:8px;padding:12px;background:var(--bg);border-radius:var(--radius-sm);margin-bottom:12px;">${w.word.split('').map(() => '_').join(' ')}</div>
-    <div style="text-align:center;color:var(--text-light);margin-bottom:8px;">💡 ${w.hint||''}</div>
-    <div id="hangmanLetters" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;max-width:400px;margin:0 auto;">
-      ${'abcdefghijklmnopqrstuvwxyz'.split('').map(l => `<button class="btn btn-sm btn-outline" onclick="guessLetter('${l}',this)" style="min-width:36px;padding:6px 10px;">${l}</button>`).join('')}
-    </div>`;
+  document.getElementById('gameContent').innerHTML = `<div class="game-question">💀 Guess the word (${w.word.length} letters)</div><div class="hangman-display" id="hangmanDisplay">${HANGMAN_STAGES[0]}</div><div id="hangmanWord" style="text-align:center;font-size:2rem;letter-spacing:8px;padding:12px;background:var(--bg);border-radius:var(--radius-sm);margin-bottom:12px;">${w.word.split('').map(() => '_').join(' ')}</div><div style="text-align:center;color:var(--text-light);margin-bottom:8px;">💡 ${w.hint||''}</div><div id="hangmanLetters" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;max-width:400px;margin:0 auto;">${'abcdefghijklmnopqrstuvwxyz'.split('').map(l => `<button class="btn btn-sm btn-outline" onclick="guessLetter('${l}',this)" style="min-width:36px;padding:6px 10px;">${l}</button>`).join('')}</div>`;
 }
-
 function guessLetter(letter, btn){
   btn.disabled = true; btn.style.opacity = '0.5';
   const word = window._hmWord;
@@ -1077,16 +891,14 @@ function guessLetter(letter, btn){
     word.split('').forEach((l,i) => { if (l === letter) cur[i] = letter; });
     disp.textContent = cur.join(' ');
     if (!cur.includes('_')){
-      gameScore += 15; document.getElementById('gameScore').textContent = 'Score: '+gameScore;
-      document.getElementById('gameFeedback').textContent = `🎉 Guessed "${word}"! +15`; document.getElementById('gameFeedback').style.color = 'var(--success)';
+      gameScore += 15; document.getElementById('gameScore').textContent = 'Score: '+gameScore; document.getElementById('gameFeedback').textContent = `🎉 Guessed "${word}"! +15`; document.getElementById('gameFeedback').style.color = 'var(--success)';
       document.querySelectorAll('#hangmanLetters .btn').forEach(b => b.disabled = true);
       setTimeout(nextGameRound, 1500);
     }
   } else {
     window._hmWrong++;
     if (window._hmWrong < HANGMAN_STAGES.length) document.getElementById('hangmanDisplay').textContent = HANGMAN_STAGES[window._hmWrong];
-    document.getElementById('gameFeedback').textContent = `❌ "${letter}" not in word`;
-    document.getElementById('gameFeedback').style.color = 'var(--danger)';
+    document.getElementById('gameFeedback').textContent = `❌ "${letter}" not in word`; document.getElementById('gameFeedback').style.color = 'var(--danger)';
     if (window._hmWrong >= HANGMAN_STAGES.length - 1){
       document.getElementById('gameFeedback').textContent = `💀 Game over! Word: "${word}"`;
       disp.textContent = word.split('').join(' ');
@@ -1106,42 +918,31 @@ function renderWebConnect(w){
   window._wcSelected = [];
   window._wcWord = w.word.toLowerCase();
   let idx = 0;
-  let html = `<div class="game-question">🌐 Connect to spell: <strong>"${w.word}"</strong></div>
-    <div style="text-align:center;color:var(--text-light);margin-bottom:8px;">💡 ${w.hint||''}</div>
-    <div class="web-connect-grid">`;
-  for (let r=0;r<4;r++) for (let c=0;c<4;c++){
-    const letter = shuffled[idx++];
-    html += `<div class="node" onclick="checkWC('${letter}',this)">${letter}</div>`;
-  }
+  let html = `<div class="game-question">🌐 Connect to spell: <strong>"${w.word}"</strong></div><div style="text-align:center;color:var(--text-light);margin-bottom:8px;">💡 ${w.hint||''}</div><div class="web-connect-grid">`;
+  for (let r=0;r<4;r++) for (let c=0;c<4;c++){ const letter = shuffled[idx++]; html += `<div class="node" onclick="checkWC('${letter}',this)">${letter}</div>`; }
   html += `</div><div style="text-align:center;margin-top:12px;"><button class="btn btn-outline" onclick="resetWC()"><i class="fas fa-redo"></i> Reset</button></div>`;
   document.getElementById('gameContent').innerHTML = html;
 }
-
 function checkWC(letter, node){
   if (node.classList.contains('connected') || node.classList.contains('wrong')) return;
-  node.classList.add('selected');
-  window._wcSelected.push(letter);
+  node.classList.add('selected'); window._wcSelected.push(letter);
   const word = window._wcWord;
   const current = window._wcSelected.join('');
   const isMatch = word.split('').every((l,i) => i >= current.length || l === current[i]);
   if (!isMatch){
     document.querySelectorAll('.web-connect-grid .node.selected').forEach(n => { n.classList.remove('selected'); n.classList.add('wrong'); });
-    window._wcSelected = [];
-    document.getElementById('gameFeedback').textContent = '❌ Wrong path!'; document.getElementById('gameFeedback').style.color = 'var(--danger)';
+    window._wcSelected = []; document.getElementById('gameFeedback').textContent = '❌ Wrong path!'; document.getElementById('gameFeedback').style.color = 'var(--danger)';
     setTimeout(() => document.querySelectorAll('.web-connect-grid .node.wrong').forEach(n => n.classList.remove('wrong')), 800);
     return;
   }
   if (current.length === word.length){
     document.querySelectorAll('.web-connect-grid .node.selected').forEach(n => { n.classList.remove('selected'); n.classList.add('connected'); });
-    gameScore += 15; document.getElementById('gameScore').textContent = 'Score: '+gameScore;
-    document.getElementById('gameFeedback').textContent = `✅ Connected! +15`; document.getElementById('gameFeedback').style.color = 'var(--success)';
-    window._wcSelected = [];
-    setTimeout(nextGameRound, 1500);
+    gameScore += 15; document.getElementById('gameScore').textContent = 'Score: '+gameScore; document.getElementById('gameFeedback').textContent = `✅ Connected! +15`; document.getElementById('gameFeedback').style.color = 'var(--success)';
+    window._wcSelected = []; setTimeout(nextGameRound, 1500);
   } else {
     document.getElementById('gameFeedback').textContent = `🔗 ${current}`; document.getElementById('gameFeedback').style.color = 'var(--primary)';
   }
 }
-
 function resetWC(){
   document.querySelectorAll('.web-connect-grid .node').forEach(n => n.classList.remove('selected','connected','wrong'));
   window._wcSelected = [];
@@ -1157,20 +958,14 @@ function renderMissing(w){
   const shuffled = opts.sort(() => Math.random() - 0.5);
   let disp = '';
   letters.forEach((l,i) => { disp += i === idx ? `<span class="blank" id="missingBlank">__</span>` : `<span class="filled">${l}</span>`; });
-  document.getElementById('gameContent').innerHTML = `
-    <div class="game-question">🔤 Fill in the missing letter:</div>
-    <div class="missing-word">${disp}</div>
-    <div style="text-align:center;color:var(--text-light);margin-bottom:8px;">💡 ${w.hint||''}</div>
-    <div class="letter-options">${shuffled.map(l => `<button class="letter-btn" onclick="checkMissing('${l}','${missing}','${w.word}',this)">${l}</button>`).join('')}</div>`;
+  document.getElementById('gameContent').innerHTML = `<div class="game-question">🔤 Fill in the missing letter:</div><div class="missing-word">${disp}</div><div style="text-align:center;color:var(--text-light);margin-bottom:8px;">💡 ${w.hint||''}</div><div class="letter-options">${shuffled.map(l => `<button class="letter-btn" onclick="checkMissing('${l}','${missing}','${w.word}',this)">${l}</button>`).join('')}</div>`;
 }
-
 function checkMissing(sel, cor, word, btn){
   document.querySelectorAll('.letter-btn').forEach(b => b.classList.add('used'));
   if (sel === cor){
     btn.classList.add('correct');
     const b = document.getElementById('missingBlank'); if(b){ b.textContent = cor; b.className = 'filled'; }
-    gameScore += 10; document.getElementById('gameScore').textContent = 'Score: '+gameScore;
-    document.getElementById('gameFeedback').textContent = `✅ Correct! +10`; document.getElementById('gameFeedback').style.color = 'var(--success)';
+    gameScore += 10; document.getElementById('gameScore').textContent = 'Score: '+gameScore; document.getElementById('gameFeedback').textContent = `✅ Correct! +10`; document.getElementById('gameFeedback').style.color = 'var(--success)';
   } else {
     btn.classList.add('wrong');
     const b = document.getElementById('missingBlank'); if(b){ b.textContent = cor; b.className = 'filled'; b.style.color = 'var(--danger)'; }
@@ -1179,22 +974,14 @@ function checkMissing(sel, cor, word, btn){
   setTimeout(nextGameRound, 1500);
 }
 
-// ============================================================
-// SETTINGS
-// ============================================================
+// SETTINGS & INIT
 function applySettings(){
-  const vg = document.getElementById('voiceGender');
-  const va = document.getElementById('voiceAccent');
-  const sr = document.getElementById('speechRate');
-  const fs = document.getElementById('fontSize');
-  if (vg) voiceGender = vg.value;
-  if (va) voiceAccent = va.value;
-  if (sr) speechRate = parseFloat(sr.value);
-  if (fs) document.body.style.fontSize = fs.value;
+  const vg = document.getElementById('voiceGender'); const va = document.getElementById('voiceAccent');
+  const sr = document.getElementById('speechRate'); const fs = document.getElementById('fontSize');
+  if (vg) voiceGender = vg.value; if (va) voiceAccent = va.value;
+  if (sr) speechRate = parseFloat(sr.value); if (fs) document.body.style.fontSize = fs.value;
   const theme = localStorage.getItem('rose_color') || 'purple';
-  document.querySelectorAll('.color-btn').forEach(b => {
-    b.style.border = b.dataset.color === theme ? '3px solid var(--text)' : '3px solid transparent';
-  });
+  document.querySelectorAll('.color-btn').forEach(b => { b.style.border = b.dataset.color === theme ? '3px solid var(--text)' : '3px solid transparent'; });
 }
 
 function toggleDarkMode(){
@@ -1203,207 +990,117 @@ function toggleDarkMode(){
   else { document.documentElement.setAttribute('data-theme','dark'); localStorage.setItem('rose_theme','dark'); document.getElementById('darkModeToggle').innerHTML = '<i class="fas fa-sun"></i>'; }
 }
 
-// ============================================================
-// INIT & EVENTS
-// ============================================================
 document.addEventListener('DOMContentLoaded', () => {
-  // Login Button
-  document.getElementById('loginBtn').addEventListener('click', async () => {
+  document.getElementById('loginBtn').addEventListener('click', () => {
     const u = document.getElementById('loginUsername').value.trim();
     const p = document.getElementById('loginPassword').value.trim();
     if (!u || !p){ document.getElementById('loginError').textContent = '⚠️ Enter username and password'; return; }
-    await loginUser(u, p);
+    loginUser(u, p);
   });
-  
   document.getElementById('loginPassword').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('loginBtn').click(); });
-
-  // Logout Button
   document.getElementById('logoutBtn').addEventListener('click', () => {
-    currentUser = null;
-    localStorage.removeItem('rose_session');
+    currentUser = null; localStorage.removeItem('rose_session');
     document.getElementById('appScreen').classList.add('hidden');
     document.getElementById('loginScreen').classList.remove('hidden');
-    document.getElementById('loginUsername').value = '';
-    document.getElementById('loginPassword').value = '';
-    document.getElementById('loginError').textContent = '';
-    
-    // Hide Admin UI
-    document.getElementById('adminBadge').classList.add('hidden');
-    const adminBtn = document.getElementById('adminTabBtn');
-    if(adminBtn) adminBtn.classList.add('hidden');
+    document.getElementById('loginUsername').value = ''; document.getElementById('loginPassword').value = ''; document.getElementById('loginError').textContent = '';
+    document.getElementById('adminBadge').classList.add('hidden'); const adminBtn = document.getElementById('adminTabBtn'); if(adminBtn) adminBtn.classList.add('hidden');
   });
-
-  // Dark mode
   document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
-
-  // Tabs
   document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', function(){
-      if (this.dataset.tab === 'admin' && !isTeacher()){
-        alert('❌ Access denied. Admin only.');
-        return;
-      }
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      this.classList.add('active');
+      if (this.dataset.tab === 'admin' && !isTeacher()){ alert('❌ Access denied. Admin only.'); return; }
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); this.classList.add('active');
       document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
       const map = {spell:'spellTab', games:'gamesTab', categories:'categoriesTab', stats:'statsTab', leaderboard:'leaderboardTab', settings:'settingsTab', admin:'adminTab'};
-      const target = document.getElementById(map[this.dataset.tab]);
-      if (target) target.classList.add('active');
+      const target = document.getElementById(map[this.dataset.tab]); if (target) target.classList.add('active');
       if (this.dataset.tab === 'categories') updateCategoryWordList(currentCategory);
       if (this.dataset.tab === 'admin'){ updateUserList(); updateAllStats(); }
       if (this.dataset.tab === 'leaderboard') refreshLeaderboardUI();
       if (this.dataset.tab === 'settings') applySettings();
     });
   });
-
-  // Category Selector
   document.querySelectorAll('.category-btn').forEach(b => b.addEventListener('click', function(){ selectCategory(this.dataset.category); }));
-
-  // Spell
   document.getElementById('listenBtn').addEventListener('click', () => {
-    if (currentWord){ speakWord(currentWord); document.getElementById('wordText').textContent = '🔊 Listening...'; document.getElementById('wordDisplay').className = 'word-display listening'; setTimeout(() => { document.getElementById('wordText').textContent = '✏️ Type it!'; document.getElementById('wordDisplay').className = 'word-display'; }, 1500); }
-    else loadNewWord();
+    if (currentWord){ speakWord(currentWord); document.getElementById('wordText').textContent = '🔊 Listening...'; document.getElementById('wordDisplay').className = 'word-display listening'; setTimeout(() => { document.getElementById('wordText').textContent = '✏️ Type it!'; document.getElementById('wordDisplay').className = 'word-display'; }, 1500); } else loadNewWord();
   });
   document.getElementById('nextBtn').addEventListener('click', loadNewWord);
   document.getElementById('checkBtn').addEventListener('click', handleCheck);
   document.getElementById('userInput').addEventListener('keydown', e => { if (e.key === 'Enter'){ e.preventDefault(); handleCheck(); } });
-
-  // Reset stats
-  document.getElementById('resetStatsBtn').addEventListener('click', async () => {
+  document.getElementById('resetStatsBtn').addEventListener('click', () => {
     if (confirm('Reset your stats?')){
       const state = {correct:0, wrong:0, streak:0, missed:[]};
-      await updateUserStats(currentUser, state);
-      await updateAllStats();
-      loadNewWord();
+      const users = DB.getUsers(); users[currentUser].stats = state; DB.setUsers(users);
+      updateAllStats(); loadNewWord();
     }
   });
-
-  // Settings
   document.getElementById('voiceGender').addEventListener('change', applySettings);
   document.getElementById('voiceAccent').addEventListener('change', applySettings);
   document.getElementById('speechRate').addEventListener('change', applySettings);
   document.getElementById('fontSize').addEventListener('change', applySettings);
-  document.querySelectorAll('.color-btn').forEach(b => b.addEventListener('click', function(){
-    const c = this.dataset.color;
-    localStorage.setItem('rose_color', c);
-    document.documentElement.setAttribute('data-theme-color', c);
-    applySettings();
-  }));
-
-  // Change own password
-  document.getElementById('changePasswordBtn').addEventListener('click', async () => {
-    const cur = document.getElementById('currentPassword').value;
-    const nw = document.getElementById('newPassword').value;
-    if (!cur || !nw){ alert('⚠️ Fill both fields'); return; }
-    if (nw.length < 4){ alert('⚠️ Password must be at least 4 characters'); return; }
-    
-    if (cachedUsers[currentUser].password !== cur){ alert('❌ Current password is wrong'); return; }
-    
-    cachedUsers[currentUser].password = nw;
-    await cloudSaveUser(currentUser, cachedUsers[currentUser]);
-    
-    document.getElementById('currentPassword').value = '';
-    document.getElementById('newPassword').value = '';
-    alert('✅ Password changed successfully in the Cloud!');
+  document.querySelectorAll('.color-btn').forEach(b => b.addEventListener('click', function(){ const c = this.dataset.color; localStorage.setItem('rose_color', c); document.documentElement.setAttribute('data-theme-color', c); applySettings(); }));
+  document.getElementById('changePasswordBtn').addEventListener('click', () => {
+    const cur = document.getElementById('currentPassword').value; const nw = document.getElementById('newPassword').value;
+    if (!cur || !nw){ alert('⚠️ Fill both fields'); return; } if (nw.length < 4){ alert('⚠️ Password must be at least 4 characters'); return; }
+    const users = DB.getUsers(); if (users[currentUser].password !== cur){ alert('❌ Current password is wrong'); return; }
+    users[currentUser].password = nw; DB.setUsers(users);
+    document.getElementById('currentPassword').value = ''; document.getElementById('newPassword').value = ''; alert('✅ Password changed!');
   });
-
-  // ADMIN: create user
-  document.getElementById('createUserBtn')?.addEventListener('click', async () => {
+  document.getElementById('createUserBtn')?.addEventListener('click', () => {
     if (!isTeacher()) { alert('❌ Access denied'); return; }
-    const u = document.getElementById('newAdminUsername').value.trim();
-    const p = document.getElementById('newAdminPassword').value.trim();
-    const r = document.getElementById('newAdminRole').value;
-    if (!u || !p){ alert('⚠️ Username and password required'); return; }
-    if (p.length < 4){ alert('⚠️ Password must be 4+ characters'); return; }
-    
-    if (cachedUsers[u]){ alert('❌ Username exists'); return; }
-    
-    const newUser = {password:p, role:r, stats:{correct:0, wrong:0, streak:0, missed:[]}};
-    await cloudSaveUser(u, newUser);
-    cachedUsers[u] = newUser;
-    
-    document.getElementById('newAdminUsername').value = '';
-    document.getElementById('newAdminPassword').value = '';
-    await updateUserList();
-    alert(`✅ User "${u}" created in Cloud!`);
+    const u = document.getElementById('newAdminUsername').value.trim(); const p = document.getElementById('newAdminPassword').value.trim(); const r = document.getElementById('newAdminRole').value;
+    if (!u || !p){ alert('⚠️ Username and password required'); return; } if (p.length < 4){ alert('⚠️ Password must be 4+ characters'); return; }
+    const users = DB.getUsers(); if (users[u]){ alert('❌ Username exists'); return; }
+    users[u] = {password:p, role:r, stats:{correct:0, wrong:0, streak:0, missed:[]}};
+    DB.setUsers(users); document.getElementById('newAdminUsername').value = ''; document.getElementById('newAdminPassword').value = ''; updateUserList(); alert(`✅ User "${u}" created!`);
   });
-
-  // ADMIN: reset user password
-  document.getElementById('resetPasswordBtn')?.addEventListener('click', async () => {
+  document.getElementById('resetPasswordBtn')?.addEventListener('click', () => {
     if (!isTeacher()) { alert('❌ Access denied'); return; }
-    const u = document.getElementById('resetUserSelect').value;
-    const nw = document.getElementById('resetNewPassword').value.trim();
-    if (!u){ alert('⚠️ Select a user'); return; }
-    if (!nw || nw.length < 4){ alert('⚠️ Password must be 4+ characters'); return; }
-    
-    cachedUsers[u].password = nw;
-    await cloudSaveUser(u, cachedUsers[u]);
-    
-    document.getElementById('resetUserSelect').value = '';
-    document.getElementById('resetNewPassword').value = '';
-    alert(`✅ Password reset for "${u}" in Cloud!`);
+    const u = document.getElementById('resetUserSelect').value; const nw = document.getElementById('resetNewPassword').value.trim();
+    if (!u){ alert('⚠️ Select a user'); return; } if (!nw || nw.length < 4){ alert('⚠️ Password must be 4+ characters'); return; }
+    const users = DB.getUsers(); users[u].password = nw; DB.setUsers(users);
+    document.getElementById('resetUserSelect').value = ''; document.getElementById('resetNewPassword').value = ''; alert(`✅ Password reset for "${u}"!`);
   });
-
-  // Chat
-  document.getElementById('chatToggle').addEventListener('click', () => {
-    document.getElementById('chatWindow').classList.toggle('open');
-    if (document.getElementById('chatWindow').classList.contains('open')){ initChat(); document.getElementById('chatInput').focus(); }
-  });
+  document.getElementById('chatToggle').addEventListener('click', () => { document.getElementById('chatWindow').classList.toggle('open'); if (document.getElementById('chatWindow').classList.contains('open')){ initChat(); document.getElementById('chatInput').focus(); } });
   document.getElementById('chatClose').addEventListener('click', () => document.getElementById('chatWindow').classList.remove('open'));
+  
+  // Safe session restore
+  try {
+    const savedSession = localStorage.getItem('rose_session');
+    if (savedSession) loginUser(savedSession, null, true);
+  } catch (e) { console.warn("Local storage blocked"); }
 });
 
-async function initApp(){
-  // Theme Settings
-  const savedColor = localStorage.getItem('rose_color') || 'purple';
-  document.documentElement.setAttribute('data-theme-color', savedColor);
-  if (localStorage.getItem('rose_theme') === 'dark'){
-    document.documentElement.setAttribute('data-theme','dark');
-    document.getElementById('darkModeToggle').innerHTML = '<i class="fas fa-sun"></i>';
+function initApp(){
+  try {
+    const savedColor = localStorage.getItem('rose_color') || 'purple';
+    document.documentElement.setAttribute('data-theme-color', savedColor);
+    if (localStorage.getItem('rose_theme') === 'dark'){ document.documentElement.setAttribute('data-theme','dark'); document.getElementById('darkModeToggle').innerHTML = '<i class="fas fa-sun"></i>'; }
+  } catch(e) {}
+  
+  if (window.speechSynthesis){ window.speechSynthesis.getVoices(); window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoices(); }; }
+  
+  if (isTeacher()){ 
+      document.getElementById('adminBadge').classList.remove('hidden'); 
+      const adminBtn = document.getElementById('adminTabBtn');
+      if (adminBtn) adminBtn.classList.remove('hidden'); 
+  } else { 
+      const adminBadge = document.getElementById('adminBadge');
+      if (adminBadge) adminBadge.remove();
+      const adminBtn = document.getElementById('adminTabBtn');
+      if (adminBtn) adminBtn.remove();
+      const adminTab = document.getElementById('adminTab');
+      if (adminTab) adminTab.remove();
   }
-
-  // Voice setup
-  if (window.speechSynthesis){
-    window.speechSynthesis.getVoices();
-    window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoices(); };
-  }
-
-  // Show/Hide Admin UI
-  if (isTeacher()){
-    document.getElementById('adminBadge').classList.remove('hidden');
-    document.getElementById('adminTabBtn').classList.remove('hidden');
-  } else {
-    document.getElementById('adminBadge').classList.add('hidden');
-    document.getElementById('adminTabBtn').classList.add('hidden');
-  }
-
-  loadNewWord();
-  await updateAllStats();
-  updateCategoryWordList('all');
-  if (isTeacher()) {
-    await updateUserList();
-  }
+  
+  loadNewWord(); updateAllStats(); updateCategoryWordList('all'); if (isTeacher()) updateUserList();
 }
 
-// Global functions for inline HTML onclicks
-window.removeMissedWord = removeMissedWord;
-window.deleteUser = deleteUser;
-window.selectCategory = selectCategory;
-window.startGame = startGame;
-window.endGame = endGame;
-window.speakWord = speakWord;
-window.checkMatch = checkMatch;
-window.checkGap = checkGap;
-window.checkBee = checkBee;
-window.checkCrossword = checkCrossword;
-window.checkWSCell = checkWSCell;
-window.checkBalloon = checkBalloon;
-window.guessLetter = guessLetter;
-window.checkWC = checkWC;
-window.resetWC = resetWC;
-window.checkMissing = checkMissing;
+window.removeMissedWord = removeMissedWord; window.deleteUser = deleteUser; window.selectCategory = selectCategory; window.startGame = startGame; window.endGame = endGame; window.speakWord = speakWord; window.checkMatch = checkMatch; window.checkGap = checkGap; window.checkBee = checkBee; window.checkCrossword = checkCrossword; window.checkWSCell = checkWSCell; window.checkBalloon = checkBalloon; window.guessLetter = guessLetter; window.checkWC = checkWC; window.resetWC = resetWC; window.checkMissing = checkMissing;
 
-console.log('🌹 Rose Spell Master v4.0 Cloud loaded!');
+function initChat(){
+  const c = document.getElementById('chatMessages');
+  if (c) c.innerHTML = `<div class="msg admin">👋 Welcome to Rose Spell Master! Ask your teacher if you need help.</div>`;
+}
 </script>
-
 </body>
 </html>
